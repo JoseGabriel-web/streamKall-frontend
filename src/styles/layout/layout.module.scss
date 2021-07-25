@@ -1,0 +1,24 @@
+$border-style: solid 1px;
+.layout {
+  /* Height already set in @styles/index/index.scss selecting data-layout */
+  display: flex;
+  flex-direction: column;
+
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+
+    .contentContainer {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .children {
+      flex: 1;
+      height: 85%;
+    }
+  }
+}

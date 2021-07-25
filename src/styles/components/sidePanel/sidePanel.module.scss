@@ -1,0 +1,44 @@
+$border-style: solid 1px;
+.sidePanel {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  transition: 0.5s;
+  border-left: $border-style;
+}
+
+.sidePanel[data-isOpened="true"] {
+  width: 350px;
+}
+.sidePanel[data-isOpened="false"] {
+  width: 0px;
+}
+.sidePanelContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 350px;
+  margin: auto;
+  text-align: center;
+}
+@media (max-width: 1000px) {
+  .sidePanel[data-isOpened="true"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: green;
+    width: 100% !important;
+  }
+}
+
+.sidePanelContent {
+  height: 85%;
+}
+.sidePanelInput {
+  height: 15%;
+  border-top: $border-style;
+}

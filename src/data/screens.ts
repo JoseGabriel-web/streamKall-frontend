@@ -1,11 +1,12 @@
 import HomeScreen from "@screens/HomeScreen";
 import RoomScreen from "@screens/RoomScreen";
-import { screenInterface } from "src/types/customTypes";
+import { screenInterface } from "@customTypes";
 
-const screens: screenInterface[] = [
+
+const screens:screenInterface[] = [
   {
     label: "home",
-    path: "/home",
+    path: "/",
     exact: true,
     Component: HomeScreen,
   },
