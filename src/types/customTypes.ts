@@ -18,5 +18,6 @@ export interface controlBtnInterface {
   svg: string,
   alternateSvg?: string,
   state: boolean,
-  callback?:  () => void
+  callback?:  () => void,
+  size?: string
 }

@@ -1,7 +1,7 @@
 import { controlBtnInterface } from "@customTypes"
 import { FC } from "react"
 
-const ControlBtn:FC<controlBtnInterface> = ({ svg, alternateSvg, state, callback }) => {
+const ControlBtn:FC<controlBtnInterface> = ({ svg, alternateSvg, state, callback, size }) => {
     
     const handleClick = () => {
         if(callback) {
@@ -12,7 +12,7 @@ const ControlBtn:FC<controlBtnInterface> = ({ svg, alternateSvg, state, callback
     
     return (
         <button onClick={() => handleClick()}>
-            <img src={alternateSvg && !state?  alternateSvg : svg} height="70%" width="70%" style={{ maxWidth: '25px', maxHeight: '25px' }} />        
+            <img src={alternateSvg && !state?  alternateSvg : svg} height={size? size : "70%"} width={size? size : "70%"} style={{ maxWidth: '25px', maxHeight: '25px' }} />        
         </button>
     )
 }

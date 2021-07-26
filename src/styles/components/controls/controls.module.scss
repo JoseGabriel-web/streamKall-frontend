@@ -1,35 +1,24 @@
 .controls {
   height: 15%;
-  background-color: rgb(5, 8, 15);
-  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 0;
 
-  .leftControl,
-  .rightControl,
-  .middleControl {
+  .buttons {
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
     display: flex;
-    height: 100%;
-    padding: 20px 2vw;
-  }
-  .leftControl,
-  .rightControl {
-    width: 30%;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  .middleControl {
-    flex: 1;
     justify-content: center;
     align-items: center;
-    
-    button {
-      font-weight: bold;
-    }
+    width: 40%;
+    height: 100%;
+    border-radius: 10px;
   }
 
   button {
-    border: solid 1px;
+    border: none;
     width: 30%;
     height: 100%;
     border-radius: 10px;
@@ -48,17 +37,26 @@
     position: relative;
   }
 
-  @media screen and (max-width: 600px) {
-    .leftControl,
-    .rightControl {
-      width: 45%;
-      flex-direction: row;
-      justify-content: space-between;
+  .roomSwitch {
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    max-width: max-content;    
+    min-width: max-content;    
+    height: 100%;
+    margin-left: 10px;
+    border-radius: 10px;
+
+    button {
+      width: 100%;
     }
-    .middleControl {
-      button {
-        min-width: max-content;
-      }
+  }
+
+  @media screen and (max-width: 600px) {
+    & button {
+      min-width: max-content;
     }
   }
 }

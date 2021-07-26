@@ -8,7 +8,7 @@ $border-style: solid 1px;
   align-items: center;
   overflow-x: hidden;
   transition: 0.5s; 
-  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+  box-shadow:rgba(0, 0, 0, 0.02) 0px 1px 3px -0px, rgb(0, 0, 0) 1px 1px 1px -1px;
 }
 
 .sidePanel[data-isOpened="true"] {
@@ -48,7 +48,6 @@ $border-style: solid 1px;
   height: 85%;
 }
 .sidePanelInput {
-  height: 15%;
-  // border-top: $border-style white;
-  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+  height: 15%;  
+  box-shadow:rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgb(0, 0, 0) 1px -1px 1px -1px;
 }
