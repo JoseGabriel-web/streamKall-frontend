@@ -7,8 +7,8 @@ $border-style: solid 1px;
   justify-content: center;
   align-items: center;
   overflow-x: hidden;
-  transition: 0.5s;
-  border-left: $border-style;
+  transition: 0.5s; 
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
 }
 
 .sidePanel[data-isOpened="true"] {
@@ -26,12 +26,21 @@ $border-style: solid 1px;
   text-align: center;
 }
 @media (max-width: 1000px) {
-  .sidePanel[data-isOpened="true"] {
+  .sidePanel {
     position: absolute;
     top: 0;
-    right: 0;
-    background-color: green;
+    left: 0;
+  }
+  .sidePanel[data-isopened="true"] {    
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100% !important;
+
+    .sidePanelContainer {
+      position: relative;
+      width: 100%;
+    }
   }
 }
 
@@ -40,5 +49,6 @@ $border-style: solid 1px;
 }
 .sidePanelInput {
   height: 15%;
-  border-top: $border-style;
+  // border-top: $border-style white;
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
 }

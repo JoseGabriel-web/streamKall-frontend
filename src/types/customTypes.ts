@@ -10,3 +10,13 @@ export interface screenInterface {
 export interface layoutProps {
   children: React.ReactNode;
 }
+export interface childrenProp {
+  children: React.ReactNode;
+}
+
+export interface controlBtnInterface {
+  svg: string,
+  alternateSvg?: string,
+  state: boolean,
+  callback?:  () => void
+}

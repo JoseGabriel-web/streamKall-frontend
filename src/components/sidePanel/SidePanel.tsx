@@ -1,10 +1,14 @@
 import { FC } from 'react'
 import styles from '@styles/components/sidePanel/sidePanel.module.scss'
+import { useSidePanelState } from '@context/sidePanel/SidePanelProvider'
 
 
-const SidePanel:FC<{ sidePanelState: boolean }> = ({ sidePanelState }) => {
+const SidePanel:FC = () => {
+
+    const state = useSidePanelState()
+
     return (
-        <div className={styles.sidePanel} data-isOpened={sidePanelState}>
+        <div className={styles.sidePanel} data-isopened={state}>
           <div className={styles.sidePanelContainer}>
             <div className={styles.sidePanelContent}>
 

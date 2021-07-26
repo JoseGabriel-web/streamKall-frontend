@@ -1,4 +1,64 @@
 .controls {
   height: 15%;
-  border-top: solid 1px;
+  background-color: rgb(5, 8, 15);
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+  display: flex;
+  flex-direction: row;
+
+  .leftControl,
+  .rightControl,
+  .middleControl {
+    display: flex;
+    height: 100%;
+    padding: 20px 2vw;
+  }
+  .leftControl,
+  .rightControl {
+    width: 30%;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .middleControl {
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    
+    button {
+      font-weight: bold;
+    }
+  }
+
+  button {
+    border: solid 1px;
+    width: 30%;
+    height: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    min-width: 15px;
+    min-height: 15px;
+    outline: none;
+  }
+
+  button svg {
+    position: relative;
+  }
+
+  @media screen and (max-width: 600px) {
+    .leftControl,
+    .rightControl {
+      width: 45%;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .middleControl {
+      button {
+        min-width: max-content;
+      }
+    }
+  }
 }

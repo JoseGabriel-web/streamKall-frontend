@@ -9,3 +9,18 @@ body,
 [data-layout] {
   height: 100%;
 }
+
+#root {
+  background-color: rgb(12, 17, 34);
+  
+  button {
+    background-color: rgb(8, 13, 27);
+    filter: brightness(2);
+    box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+    border: none !important;
+    outline: none;
+    color: white;
+  }
+
+  
+}

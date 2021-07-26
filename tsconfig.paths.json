@@ -5,7 +5,9 @@
       "@screens/*": ["src/screens/*"],
       "@components/*": ["src/components/*"],
       "@styles/*": ["src/styles/*"],      
-      "@customTypes": ["src/types/customTypes"]
+      "@customTypes": ["src/types/customTypes"],
+      "@context/*": ["src/context/*"],
+      "@assets/*": ["src/assets/*"]
     }
   }
 }

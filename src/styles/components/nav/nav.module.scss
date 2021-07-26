@@ -2,5 +2,6 @@ $border-style: solid 1px;
 .nav {
   height: 10%;
   width: 100%;
-  border-bottom: $border-style;
+  // border-bottom: $border-style white;
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
 }
