@@ -47,9 +47,10 @@ const Controls: FC = () => {
           callback={toggleSidePanel}
         />
         <ControlBtn key={"shareSvg"} svg={shareSvg} state={true} />
+        
       </div>
       <div className={styles.roomSwitch}>
-        <ControlBtn key={"shareSvg"} svg={joinRoomSvg} alternateSvg={leaveRoomSvg} state={true} size={"100%"} />        
+        <ControlBtn key={"roomControlSvg"} svg={joinRoomSvg} alternateSvg={leaveRoomSvg} state={true} size={"100%"} />
       </div>
     </div>
   );

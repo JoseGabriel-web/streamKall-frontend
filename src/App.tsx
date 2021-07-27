@@ -9,8 +9,8 @@ const App: FC = () => {
     <Layout>
       <Router>
         <Switch>
-          {screens.map(({ path, Component }: screenInterface) => (
-            <Route path={path} exact>
+          {screens.map(({ path, Component, label }: screenInterface) => (
+            <Route key={label} path={path} exact>
               <Component />
             </Route>
           ))}
