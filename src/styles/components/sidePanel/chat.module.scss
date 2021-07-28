@@ -1,0 +1,52 @@
+.chatContainer {
+    // border: solid;
+    height: 100%;
+    padding: 10px;
+}
+
+.message {
+    height: auto;
+    width: 100%;
+    // border: solid;
+    display: flex;
+}
+
+.iconContainer {
+    width: 20%;
+    height: 60px;
+    padding: 5px;
+    
+    .userIcon {
+        height: 100%;
+        width: 100%;
+        border: solid;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+      rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    }
+}
+.textContainer {
+    width: 80%;
+    
+}
+
+.nameAndTime {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;   
+    padding: 5px;
+
+    .name h5 {
+        text-transform: capitalize;
+    }
+
+}
+.messageText {
+    max-width: 100%;
+    flex-wrap: wrap;
+    padding: 5px;
+
+    p {
+        text-align: start;
+        font-size: small;
+    }
+}

@@ -5,13 +5,12 @@ const ControlBtn:FC<controlBtnInterface> = ({ svg, alternateSvg, state, callback
     
     const handleClick = () => {
         if(callback) {
-            console.log('This is the callback -> ', callback)
             callback()
         }
     }
     
     return (
-        <button onClick={() => handleClick()}>
+        <button style={{ cursor: 'pointer' }} onClick={() => handleClick()}>
             <img src={alternateSvg && !state?  alternateSvg : svg} height={size? size : "70%"} width={size? size : "70%"} style={{ maxWidth: '25px', maxHeight: '25px' }} />        
         </button>
     )

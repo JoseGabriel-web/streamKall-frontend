@@ -7,7 +7,7 @@ interface props {
 const Participants:FC = () => {
     return (
         <div>
-            Participants
+            
         </div>
     )
 }

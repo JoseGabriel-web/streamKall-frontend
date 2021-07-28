@@ -1,5 +1,5 @@
 import { layoutProps } from "src/types/customTypes";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import styles from "@styles/layout/layout.module.scss";
 import Controls from "@components/controls/Controls";
 import SidePanel from "@components/sidePanel/SidePanel";
@@ -15,8 +15,10 @@ const Layout: FC<layoutProps> = ({ children }) => {
     setSidePanelState(!sidePanelState);
   };
 
+  const minHeight = window.innerHeight    
+
   return (
-    <div className={styles.layout} data-layout>
+    <div style={{ minHeight: `${minHeight}px`}} className={styles.layout} data-layout>
       <AppContext>
         <Nav />
         <div className={styles.container}>
