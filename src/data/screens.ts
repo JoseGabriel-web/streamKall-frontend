@@ -13,7 +13,7 @@ const screens:screenInterface[] = [
   {
     label: "room",
     path: "/room",
-    exact: false,
+    exact: true,
     Component: RoomScreen,
   },
 ];

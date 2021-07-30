@@ -1,31 +1,78 @@
-import { FC } from "react";
+import { FC, useRef, useEffect, useState } from "react";
 import styles from "@styles/components/sidePanel/chat.module.scss";
+import Message from "./Message";
+import { useSocketIo } from "@context/socketIo/SocketIoProvider";
+import Announcement from "./Announcement";
+import { announcementInterface, messageInterface } from "@customTypes";
+
+interface messageComponent extends messageInterface {
+  type: "message";
+}
+interface announcementComponent extends announcementInterface {
+  type: "announcement";
+}
 
 const Chat: FC = () => {
+  const socket = useSocketIo();
+  const [chatContent, setChatContent] = useState<Array<messageComponent | announcementComponent>>([])
+  const chatRef = useRef<HTMLDivElement>(null)
+  const addToChatContent = (component: messageComponent | announcementComponent) => {
+    setChatContent(prevState => [...prevState, component])
+  }
+
+  const scrollToBottom = () => {
+    if(chatRef !== null && chatRef.current !== null) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight
+    }
+  }
+
+  useEffect(() => {
+    socket.off("room:user-join").on("room:user-join", (message: string) => {
+      addToChatContent({ type: "announcement", text: message })
+      scrollToBottom()
+    });
+
+    socket.off("room:user-leave").on("room:user-leave", (message: string) => {
+      addToChatContent({ type: "announcement", text: message })
+      scrollToBottom()
+    });
+    
+    socket.off("chat:receive").on("chat:receive", ({ sender, message, date }: messageInterface) => {
+      addToChatContent({ type: "message", sender, message, date  })
+      scrollToBottom()
+    });
+  }, [socket]);
+
   return (
-    <div className={styles.chatContainer}>
-      <div className={styles.message}>
-        <div className={styles.iconContainer}>
-          <div className={styles.userIcon} />
-        </div>
-        <div className={styles.textContainer}>
-          <div className={styles.nameAndTime}>
-            <div className={styles.name}>
-              <h5>jose gabriel</h5>
-            </div>
-            <div className={styles.time}>
-              <small>11:48pm</small>
-            </div>
-          </div>
-          <div className={styles.messageText}>
-            <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam minus sit nulla aperiam eaque deleniti explicabo ipsum unde deserunt laborum voluptates molestiae, nobis nisi quidem sequi omnis rerum possimus pariatur!
-            </p>
-          </div>
-        </div>
-      </div>
+    <div className={styles.chatContainer} ref={chatRef}>
+      {chatContent &&
+        chatContent.map((component) => {
+          console.log(chatContent);
+          if (component.type === "announcement") {
+            return <Announcement text={component.text} />;
+          } else if (component.type === "message") {
+            return (
+              <Message
+                sender={component.sender}
+                date={component.date}
+                message={component.message}
+              />
+            );
+          }
+        })}
     </div>
   );
 };
 
 export default Chat;
+
+{
+  /* <Message
+  name="jose gabriel"
+  date={currentDate}
+  message="Lorem, ipsum dolor sit amet consectetur adipisicing elit."
+/> */
+}
+{
+  /* <Announcement /> */
+}

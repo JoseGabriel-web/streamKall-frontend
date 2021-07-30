@@ -17,6 +17,7 @@ import {
   useIsFullscreen,
   useToggleFullscreen,
 } from "@context/fullscreen/FullscreenProvider";
+import { useLocation } from "react-router-dom";
 
 const Controls: FC = () => {
   const toggleSidePanel = useToggleSidePanel();
@@ -24,6 +25,7 @@ const Controls: FC = () => {
   const [hasVideo, setHasVideo] = useState(false);
   const [hasAudio, setHasAudio] = useState(false);
   const isFullscreen: boolean = useIsFullscreen();
+  const { pathname } = useLocation()
 
   return (
     <div className={styles.controls}>
@@ -49,8 +51,8 @@ const Controls: FC = () => {
         <ControlBtn key={"shareSvg"} svg={shareSvg} state={true} />
         
       </div>
-      <div className={styles.roomSwitch}>
-        <ControlBtn key={"roomControlSvg"} svg={joinRoomSvg} alternateSvg={leaveRoomSvg} state={true} size={"100%"} />
+      <div className={styles.roomSwitch} style={{  display: pathname.includes('room')? 'flex' : 'none' }} >
+        <ControlBtn key={"roomControlSvg"} svg={leaveRoomSvg} state={true} size={"100%"} />
       </div>
     </div>
   );

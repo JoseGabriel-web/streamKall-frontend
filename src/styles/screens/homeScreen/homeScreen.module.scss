@@ -1,3 +1,100 @@
-.screen {
-    
+.homeScreen {
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  overflow-y: auto;  
+  //   border: solid;
+}
+
+.roomSelector {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.userNameInput,
+.roomNameInput {
+    height: 40px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.userNameInput {    
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  //   border: solid;
+
+  input {
+    height: 100%;
+    width: 100%;
+    padding-left: 10px;
+  }
+}
+
+.roomNameInput {    
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  //   border: solid;
+
+  input {
+    height: 100%;
+    width: 100%;
+    padding-left: 10px;
+  }
+}
+
+.rememberNameQuestion {  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  input {
+    margin-right: 5px;
+  }
+
+  small {
+  }
+}
+
+.roomSwitch {
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+  rgba(27, 31, 35, 0.5) 0px 0px 0px 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;    
+  max-width: max-content;    
+  min-width: max-content;
+  margin-top: 10px;
+  margin-left: 10px;
+  border-radius: 10px;
+
+  button {
+    width: 100%;
+    border: none;    
+    height: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    min-width: 15px;
+    min-height: 15px;
+    outline: none;
+  }
+}
+
+
+@media screen and (max-width: 900px) {
+  .homeScreen {
+    padding: 4vw;
+  }
 }

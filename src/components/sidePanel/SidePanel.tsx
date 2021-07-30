@@ -17,54 +17,55 @@ const SidePanel: FC = () => {
   const toggleContent = () => {
     setIsChat((prev) => !prev);
     setIsParticipants((prev) => !prev);
-  };
-
-  const windowHeight = window.innerHeight  
-  const [minHeight, setMinHeight] = useState<string>("")
-
-  useEffect(() => {
-    const updateMinHeight = () => {
-      if(window.innerWidth > 900) {
-        setMinHeight(`calc(${windowHeight}px - 10%)`)        
-      } else {        
-        setMinHeight(`${windowHeight}px`)
-      }
-    }
-    window.addEventListener('resize', updateMinHeight)
-    return () => window.removeEventListener('resize', updateMinHeight)
-  },[])
-
+  };  
 
   return (
-    <div style={{ minHeight: minHeight, maxHeight: minHeight }} className={styles.sidePanel} data-isopened={state}>
-      <div style={{ minHeight: minHeight, maxHeight: minHeight }} className={styles.sidePanelContainer}>
-        <div className={styles.sidePanelContent}>  
-
-        <div className={styles.sidePanelHeader}>                            
-
-          <div className={styles.contentController}>
-            <div onClick={() => toggleContent()} data-isselected={isChat}>
-              <h5>chat</h5>
+    <div
+      className={styles.sidePanel}
+      data-isopened={state}
+    >
+      <div className={styles.sidePanelContainer}>
+        <div className={styles.sidePanelContent}>
+          <div className={styles.sidePanelHeader}>
+            <div className={styles.contentController}>
+              <div onClick={() => toggleContent()} data-isselected={isChat}>
+                <h5>chat</h5>
+              </div>
+              <div
+                onClick={() => toggleContent()}
+                data-isselected={isParticipants}
+              >
+                <h5>participants</h5>
+              </div>
             </div>
-            <div
-              onClick={() => toggleContent()}
-              data-isselected={isParticipants}
-            >
-              <h5>participants</h5>
+
+            <div className={styles.closeBtnContainer}>
+              <ControlBtn
+                size="40%"
+                svg={closeSvg}
+                callback={toggleSidePanel}
+                state={false}
+              />
             </div>
           </div>
 
-          <div className={styles.closeBtnContainer}>
-            <ControlBtn size="40%" svg={closeSvg} callback={toggleSidePanel} state={false} />
-          </div>
-
-        </div>        
-          
           <div className={styles.contentContainer}>
-            <div style={{ display: isChat ? "block" : "none", height: "100%" }}>
+            <div
+              style={{
+                display: isChat ? "block" : "none",
+                height: "100%",
+                maxHeight: "100%",
+              }}
+            >
               <Chat />
             </div>
-            <div style={{ display: isParticipants ? "block" : "none", height: "100%" }}>
+            <div
+              style={{
+                display: isParticipants ? "block" : "none",
+                height: "100%",
+                maxHeight: "100%",
+              }}
+            >
               <Participants />
             </div>
           </div>

@@ -18,8 +18,7 @@ const SidePanelProvider: FC<childrenProp> = ({ children }) => {
     setSidePanelState((prev) => !prev);
   }
 
-  useEffect(() => {
-    // window.addEventListener('resize', () => setSidePanelState(false))
+  useEffect(() => {    
     if(window.innerWidth < 700) {
       toggleSidePanel()
     }

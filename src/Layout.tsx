@@ -7,18 +7,9 @@ import Nav from "@components/nav/Nav";
 import AppContext from "./context/app/AppContext";
 
 const Layout: FC<layoutProps> = ({ children }) => {
-  const [sidePanelState, setSidePanelState] = useState<boolean>(
-    window.innerWidth > 1000,
-  );
-
-  const handleSidePanel = (): void => {
-    setSidePanelState(!sidePanelState);
-  };
-
-  const minHeight = window.innerHeight    
 
   return (
-    <div style={{ minHeight: `${minHeight}px`}} className={styles.layout} data-layout>
+    <div className={styles.layout} data-layout>
       <AppContext>
         <Nav />
         <div className={styles.container}>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap");
 * {
   margin: 0;
   padding: 0;
@@ -7,8 +7,8 @@
 html,
 body,
 #root,
-[data-layout] {
-  height: 100%;  
+[data-layout] {  
+  height: 100%;
 }
 
 button {
@@ -17,9 +17,8 @@ button {
 }
 
 body {
-  font-family: 'Open Sans', sans-serif;  
+  font-family: "Open Sans", sans-serif;
 }
-
 
 /* EMOJI PICKER CUSTOM STYLES */
 .emoji-picker-react input.emoji-search {
@@ -33,10 +32,29 @@ body {
   border: none;
 }
 .emoji-picker-react ul.skin-tones-list label {
-  display: none;  
+  display: none;
 }
-.emoji-picker-react .emoji-group:before {  
+.emoji-picker-react .emoji-group:before {
   width: 100%;
   text-align: start;
-  
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d6dee1;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
 }

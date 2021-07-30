@@ -5,8 +5,12 @@ import sendSvg from "@assets/svg/send.svg";
 import Picker, { IEmojiData } from "emoji-picker-react";
 import { useRef, useState } from "react";
 import useClickLocation from "@hooks/useClickLocation";
+import { useSocketIo } from "@context/socketIo/SocketIoProvider";
+import { useRoomContext } from "@context/room/RoomProvider";
 
 const ChatInput = () => {
+  const socket = useSocketIo()
+  const { room } = useRoomContext()
   const [chosenEmoji, setChosenEmoji] = useState<IEmojiData | null>(null);
   const [isPickerOpen, setIsPickerOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
@@ -31,6 +35,12 @@ const ChatInput = () => {
   };
 
   const toggleEmojiPicker = () => setIsPickerOpen((prev) => !prev);
+
+  const emitMessage = () => {
+    if(message === '') return
+    socket.emit("chat:send", { message, roomName: room.name })
+    setMessage("")
+  }
 
   return (
     <div className={styles.chatInput}>
@@ -72,7 +82,7 @@ const ChatInput = () => {
       </div>
 
       <div className={styles.sendIconContainer}>
-        <ControlBtn state={false} svg={sendSvg} />
+        <ControlBtn state={false} svg={sendSvg} callback={emitMessage} />
       </div>
     </div>
   );
