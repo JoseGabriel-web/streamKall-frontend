@@ -42,6 +42,12 @@ const ChatInput = () => {
     setMessage("")
   }
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if(e.key === 'Enter') {
+      emitMessage()
+    }
+  }
+
   return (
     <div className={styles.chatInput}>
       <div ref={pickerRef} className={styles.emojiPickerContainer}>
@@ -78,6 +84,8 @@ const ChatInput = () => {
           placeholder="Type a message here..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyPress={handleKeyPress}
+          tabIndex={0}
         />
       </div>
 

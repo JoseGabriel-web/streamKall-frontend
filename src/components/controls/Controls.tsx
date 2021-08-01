@@ -18,6 +18,8 @@ import {
   useToggleFullscreen,
 } from "@context/fullscreen/FullscreenProvider";
 import { useLocation } from "react-router-dom";
+import { useSocketIo } from "@context/socketIo/SocketIoProvider";
+import { useRoomContext } from "@context/room/RoomProvider";
 
 const Controls: FC = () => {
   const toggleSidePanel = useToggleSidePanel();
@@ -25,7 +27,14 @@ const Controls: FC = () => {
   const [hasVideo, setHasVideo] = useState(false);
   const [hasAudio, setHasAudio] = useState(false);
   const isFullscreen: boolean = useIsFullscreen();
-  const { pathname } = useLocation()
+  const { pathname } = useLocation();
+  const socket = useSocketIo();
+  const { room } = useRoomContext();
+
+  const leaveRoom = () => {
+    console.log("leaving room");
+    socket.emit("room:leave", { roomName: room.name });
+  };
 
   return (
     <div className={styles.controls}>
@@ -49,10 +58,18 @@ const Controls: FC = () => {
           callback={toggleSidePanel}
         />
         <ControlBtn key={"shareSvg"} svg={shareSvg} state={true} />
-        
       </div>
-      <div className={styles.roomSwitch} style={{  display: pathname.includes('room')? 'flex' : 'none' }} >
-        <ControlBtn key={"roomControlSvg"} svg={leaveRoomSvg} state={true} size={"100%"} />
+      <div
+        className={styles.roomSwitch}
+        style={{ display: pathname.includes("room") ? "flex" : "none" }}
+      >
+        <ControlBtn
+          key={"roomControlSvg"}
+          svg={leaveRoomSvg}
+          state={true}
+          size={"100%"}
+          callback={leaveRoom}
+        />
       </div>
     </div>
   );
