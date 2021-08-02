@@ -17,9 +17,11 @@ import {
   useIsFullscreen,
   useToggleFullscreen,
 } from "@context/fullscreen/FullscreenProvider";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useSocketIo } from "@context/socketIo/SocketIoProvider";
 import { useRoomContext } from "@context/room/RoomProvider";
+import { useAudio } from "@context/media/audioProvider";
+import { useVideo } from "@context/media/videoProvider";
 
 const Controls: FC = () => {
   const toggleSidePanel = useToggleSidePanel();
@@ -28,12 +30,34 @@ const Controls: FC = () => {
   const [hasAudio, setHasAudio] = useState(false);
   const isFullscreen: boolean = useIsFullscreen();
   const { pathname } = useLocation();
+  const history = useHistory();
   const socket = useSocketIo();
   const { room } = useRoomContext();
+  const { getAudio, audioPermission, audioStream } = useAudio();
+  const { getVideo, videoPermission, videoStream } = useVideo();
+
+  const handleAudio = () => {
+    getAudio();    
+  };
+  const handleVideo = () => {
+    getVideo();
+  };
+
+  useEffect(() => {
+    if(audioStream) {
+      socket.emit("media:stream", { media: audioStream })
+    }
+  }, [audioStream])
+
+  /**
+   * first get permision for audio and video
+   * when click on video icon check if already has permission for camera if so start streaming or stop streaming
+   * if clicked on audio check for permission on audio
+   * */
 
   const leaveRoom = () => {
-    console.log("leaving room");
     socket.emit("room:leave", { roomName: room.name });
+    history.push("/");
   };
 
   return (
@@ -43,13 +67,15 @@ const Controls: FC = () => {
           key={"videoSvg"}
           svg={videoSvg}
           alternateSvg={noVideoSvg}
-          state={hasVideo}
+          state={videoPermission}
+          callback={handleVideo}
         />
         <ControlBtn
           key={"audioSvg"}
           svg={audioSvg}
           alternateSvg={noAudioSvg}
-          state={hasAudio}
+          state={audioPermission}
+          callback={handleAudio}
         />
         <ControlBtn
           key={"chatSvg"}

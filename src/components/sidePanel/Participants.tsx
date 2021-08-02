@@ -18,7 +18,7 @@ const Participants:FC = () => {
     return (
         <div className={styles.participantsContainer}>
             {updatedParticipants && [...updatedParticipants].map(({ name, id }) => {
-                return <Participant name={name} audio={false} video={false} />
+                return <Participant key={id} name={name} audio={false} video={false} />
             })}
         </div>
     )

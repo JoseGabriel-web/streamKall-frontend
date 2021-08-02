@@ -19,7 +19,8 @@ export interface controlBtnInterface {
   alternateSvg?: string,
   state: boolean,
   callback?:  () => void,
-  size?: string
+  size?: string,
+  disabled?: boolean
 }
 
 export interface messageInterface {

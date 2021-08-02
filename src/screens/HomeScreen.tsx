@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import styles from "@styles/screens/homeScreen/homeScreen.module.scss";
 import { useUserContext } from "@context/user/UserProvider";
 import { useSocketIo } from "@context/socketIo/SocketIoProvider";
@@ -8,17 +8,18 @@ import ControlBtn from "@components/controls/ControlBtn";
 import { useHistory } from "react-router-dom";
 
 const HomeScreen: FC = () => {
-  const history = useHistory()
+  const history = useHistory();
   const socket = useSocketIo();
-  const { user, updateUser } = useUserContext()
-  const { room, updateRoom }= useRoomContext();
+  const { user, updateUser } = useUserContext();
+  const { room, updateRoom } = useRoomContext();
   const [name, setName] = useState<string>("");
-  const [roomName, setRoomName] = useState<string>("");  
+  const [roomName, setRoomName] = useState<string>("");
+  const [isDisabled, setIsDisabled] = useState<boolean>(name && roomName? true : false)
 
   const handleUser = () => {
     updateUser({
       name,
-      id: socket.id
+      id: socket.id,
     });
   };
 
@@ -30,10 +31,15 @@ const HomeScreen: FC = () => {
   };
 
   const joinRoom = () => {
+    if(!name || !roomName) return
     handleUser();
     handleRoom();
-    history.push('/room')
+    history.push("/room");
   };
+
+  useEffect(() => {
+    updateRoom({ name: "", participants: [] });
+  }, []);
 
   return (
     <div className={styles.homeScreen}>
@@ -65,6 +71,7 @@ const HomeScreen: FC = () => {
             svg={joinRoomSvg}
             state={true}
             size={"100%"}
+            disabled={isDisabled}
           />
         </div>
       </div>

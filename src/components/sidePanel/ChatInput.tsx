@@ -9,8 +9,8 @@ import { useSocketIo } from "@context/socketIo/SocketIoProvider";
 import { useRoomContext } from "@context/room/RoomProvider";
 
 const ChatInput = () => {
-  const socket = useSocketIo()
-  const { room } = useRoomContext()
+  const socket = useSocketIo();
+  const { room } = useRoomContext();
   const [chosenEmoji, setChosenEmoji] = useState<IEmojiData | null>(null);
   const [isPickerOpen, setIsPickerOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
@@ -19,7 +19,7 @@ const ChatInput = () => {
       setIsPickerOpen(false);
     }
   };
-  
+
   const pickerRef = useRef(null);
   useClickLocation({
     element: pickerRef.current,
@@ -31,22 +31,28 @@ const ChatInput = () => {
     emojiObject,
   ) => {
     setChosenEmoji(emojiObject);
-    setMessage(message + emojiObject.emoji)
+    setMessage(message + emojiObject.emoji);
   };
 
   const toggleEmojiPicker = () => setIsPickerOpen((prev) => !prev);
 
   const emitMessage = () => {
-    if(message === '') return
-    socket.emit("chat:send", { message, roomName: room.name })
-    setMessage("")
-  }
+    if (!room.name) return;
+    if (message === "") return;
+    socket.emit("chat:send", { message, roomName: room.name });
+    setMessage("");
+  };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if(e.key === 'Enter') {
-      emitMessage()
+    if (!room.name) return;
+    if (e.key === "Enter") {
+      emitMessage();
+    } else {
+      socket.emit("chat:typing", {});
     }
-  }
+  };
+
+  // Jose add on typing socket event and implement it in chat component
 
   return (
     <div className={styles.chatInput}>
@@ -57,7 +63,7 @@ const ChatInput = () => {
             disableAutoFocus={true}
             groupNames={{ smileys_people: "PEOPLE", recently_used: "RECENT" }}
             onEmojiClick={onEmojiClick}
-            groupVisibility={{}}            
+            groupVisibility={{}}
             pickerStyle={{
               position: "absolute",
               top: "0",

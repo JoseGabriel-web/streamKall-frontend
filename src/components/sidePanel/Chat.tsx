@@ -4,6 +4,7 @@ import Message from "./Message";
 import { useSocketIo } from "@context/socketIo/SocketIoProvider";
 import Announcement from "./Announcement";
 import { announcementInterface, messageInterface } from "@customTypes";
+import { useLocation } from "react-router-dom";
 
 interface messageComponent extends messageInterface {
   type: "message";
@@ -13,34 +14,60 @@ interface announcementComponent extends announcementInterface {
 }
 
 const Chat: FC = () => {
+  const { pathname } = useLocation();
   const socket = useSocketIo();
-  const [chatContent, setChatContent] = useState<Array<messageComponent | announcementComponent>>([])
-  const chatRef = useRef<HTMLDivElement>(null)
-  const addToChatContent = (component: messageComponent | announcementComponent) => {
-    setChatContent(prevState => [...prevState, component])
-  }
+  const [typingMessage, setTypingMessage] = useState<null | string>(null);
+  const [chatContent, setChatContent] = useState<
+    Array<messageComponent | announcementComponent>
+  >([]);
+  const chatRef = useRef<HTMLDivElement>(null);
+  const addToChatContent = (
+    component: messageComponent | announcementComponent,
+  ) => {
+    setChatContent((prevState) => [...prevState, component]);
+  };
 
   const scrollToBottom = () => {
-    if(chatRef !== null && chatRef.current !== null) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight
+    if (chatRef !== null && chatRef.current !== null) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
-  }
+  };
+
+  let timeout: NodeJS.Timeout;
+
+  socket.on("user:typing", (message: string) => {
+    setTypingMessage(message);
+    console.log("user is typing");
+  });
+
+  useEffect(() => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => setTypingMessage(null), 1000);
+  }, [typingMessage]);
+
+  useEffect(() => {
+    if (pathname === "/") {
+      setChatContent([]);
+    }
+  }, [pathname]);
 
   useEffect(() => {
     socket.off("room:user-join").on("room:user-join", (message: string) => {
-      addToChatContent({ type: "announcement", text: message })
-      scrollToBottom()
+      addToChatContent({ type: "announcement", text: message });
+      scrollToBottom();
     });
 
     socket.off("room:user-leave").on("room:user-leave", (message: string) => {
-      addToChatContent({ type: "announcement", text: message })
-      scrollToBottom()
+      addToChatContent({ type: "announcement", text: message });
+      scrollToBottom();
     });
-    
-    socket.off("chat:receive").on("chat:receive", ({ sender, message, date }: messageInterface) => {
-      addToChatContent({ type: "message", sender, message, date  })
-      scrollToBottom()
-    });
+
+    socket
+      .off("chat:receive")
+      .on("chat:receive", ({ sender, message, date }: messageInterface) => {
+        addToChatContent({ type: "message", sender, message, date });
+        scrollToBottom();
+      });
   }, [socket]);
 
   return (
@@ -60,19 +87,9 @@ const Chat: FC = () => {
             );
           }
         })}
+      {typingMessage && <Announcement text={typingMessage} />}
     </div>
   );
 };
 
 export default Chat;
-
-{
-  /* <Message
-  name="jose gabriel"
-  date={currentDate}
-  message="Lorem, ipsum dolor sit amet consectetur adipisicing elit."
-/> */
-}
-{
-  /* <Announcement /> */
-}

@@ -17,11 +17,11 @@ const Participant: FC<props> = ({ name, audio, video }: props) => {
     <div className={styles.participant}>
       <div className={styles.iconContainer}>
         <div className={styles.userIcon}>
-          <h4>{name.split("")[0].toUpperCase()}</h4>
+          <h4>{name && name.split("")[0].toUpperCase()}</h4>
         </div>
       </div>
       <div className={styles.name}>
-        <h5>{name}</h5>
+        <h5>{name && name}</h5>
       </div>
       <div className={styles.participantMedia}>
         <ControlBtn
