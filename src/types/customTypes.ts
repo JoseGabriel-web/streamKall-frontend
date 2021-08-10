@@ -1,4 +1,5 @@
-import { FC } from "react";
+import React, { FC } from "react";
+import Peer from 'simple-peer'
 
 export interface screenInterface {
   label: string;
@@ -33,7 +34,8 @@ export type updateUserType = (userObject: userInterface) => void;
 
 export interface userInterface {
   name: string;
-  id: string
+  id: string;
+  ref: React.RefObject<any>
 }
 
 export type updateRoomType = (roomObject: roomInterface) => void;
@@ -52,4 +54,18 @@ export interface announcementInterface {
   text: string
 }
 
-// update userInterface in frontend and backend
+export interface peersMapInterface {
+  peer: Peer.Instance;
+  socketID: string;
+}
+
+export type CreatePeer = (
+  userToSignal: string,
+  callerID: string,
+  stream: MediaStream,
+) => Peer.Instance;
+export type AddPeer = (
+  incomingSignal: string,
+  callerID: string,
+  stream: MediaStream,
+) => Peer.Instance;

@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import Participant from './Participant'
 import styles from '@styles/components/sidePanel/participants.module.scss'
 import { useRoomContext } from '@context/room/RoomProvider'

@@ -3,8 +3,8 @@ import styles from "@styles/components/sidePanel/participant.module.scss";
 import ControlBtn from "@components/controls/ControlBtn";
 import videoSvg from "@assets/svg/video.svg";
 import noVideoSvg from "@assets/svg/noVideo.svg";
-import audioSvg from "@assets/svg/audio.svg";
-import noAudioSvg from "@assets/svg/noAudio.svg";
+import micSvg from "@assets/svg/mic.svg";
+import noMicSvg from "@assets/svg/noMic.svg";
 
 interface props {
   name: string;
@@ -33,8 +33,8 @@ const Participant: FC<props> = ({ name, audio, video }: props) => {
         />
         <ControlBtn
           key={"participants - audioSvg"}
-          svg={audioSvg}
-          alternateSvg={noAudioSvg}
+          svg={micSvg}
+          alternateSvg={noMicSvg}
           state={audio}
           size="80%"
         />

@@ -7,8 +7,10 @@
 html,
 body,
 #root,
-[data-layout] {  
-  height: 100%;
+[data-layout] {
+  min-height: 100vh;
+  height: 100vh;
+  overflow: auto;
 }
 
 button {
@@ -57,4 +59,11 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: #a8bbbf;
+}
+
+/* Button */
+
+button:disabled {
+  cursor: not-allowed !important;  
+  opacity: 0.65; 
 }

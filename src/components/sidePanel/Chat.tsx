@@ -1,8 +1,8 @@
 import { FC, useRef, useEffect, useState } from "react";
 import styles from "@styles/components/sidePanel/chat.module.scss";
 import Message from "./Message";
-import { useSocketIo } from "@context/socketIo/SocketIoProvider";
 import Announcement from "./Announcement";
+import { useSocketIo } from "@context/socketIo/SocketIoProvider";
 import { announcementInterface, messageInterface } from "@customTypes";
 import { useLocation } from "react-router-dom";
 
@@ -18,7 +18,7 @@ const Chat: FC = () => {
   const socket = useSocketIo();
   const [typingMessage, setTypingMessage] = useState<null | string>(null);
   const [chatContent, setChatContent] = useState<
-    Array<messageComponent | announcementComponent>
+    (messageComponent | announcementComponent)[]
   >([]);
   const chatRef = useRef<HTMLDivElement>(null);
   const addToChatContent = (
@@ -37,8 +37,24 @@ const Chat: FC = () => {
 
   socket.on("user:typing", (message: string) => {
     setTypingMessage(message);
-    console.log("user is typing");
   });
+
+  socket.off("room:user-join").on("room:user-join", (message: string) => {
+    addToChatContent({ type: "announcement", text: message });
+    scrollToBottom();
+  });
+
+  socket.off("room:user-leave").on("room:user-leave", (message: string) => {
+    addToChatContent({ type: "announcement", text: message });
+    scrollToBottom();
+  });
+
+  socket
+    .off("chat:receive")
+    .on("chat:receive", ({ sender, message, date }: messageInterface) => {
+      addToChatContent({ type: "message", sender, message, date });
+      scrollToBottom();
+    });
 
   useEffect(() => {
     clearTimeout(timeout);
@@ -51,35 +67,21 @@ const Chat: FC = () => {
     }
   }, [pathname]);
 
-  useEffect(() => {
-    socket.off("room:user-join").on("room:user-join", (message: string) => {
-      addToChatContent({ type: "announcement", text: message });
-      scrollToBottom();
-    });
-
-    socket.off("room:user-leave").on("room:user-leave", (message: string) => {
-      addToChatContent({ type: "announcement", text: message });
-      scrollToBottom();
-    });
-
-    socket
-      .off("chat:receive")
-      .on("chat:receive", ({ sender, message, date }: messageInterface) => {
-        addToChatContent({ type: "message", sender, message, date });
-        scrollToBottom();
-      });
-  }, [socket]);
-
   return (
     <div className={styles.chatContainer} ref={chatRef}>
       {chatContent &&
         chatContent.map((component) => {
-          console.log(chatContent);
           if (component.type === "announcement") {
-            return <Announcement text={component.text} />;
+            return (
+              <Announcement
+                key={JSON.stringify(component)}
+                text={component.text}
+              />
+            );
           } else if (component.type === "message") {
             return (
               <Message
+                key={JSON.stringify(component)}
                 sender={component.sender}
                 date={component.date}
                 message={component.message}

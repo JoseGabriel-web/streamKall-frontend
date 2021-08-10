@@ -3,62 +3,87 @@ import styles from "@styles/components/controls/controls.module.scss";
 import { useToggleSidePanel } from "@context/sidePanel/SidePanelProvider";
 import videoSvg from "@assets/svg/video.svg";
 import noVideoSvg from "@assets/svg/noVideo.svg";
-import audioSvg from "@assets/svg/audio.svg";
-import noAudioSvg from "@assets/svg/noAudio.svg";
+import micSvg from "@assets/svg/mic.svg";
+import noMicSvg from "@assets/svg/noMic.svg";
 import chatSvg from "@assets/svg/chat.svg";
 import shareSvg from "@assets/svg/share.svg";
-import notFullscreenSvg from "@assets/svg/notFullscreen.svg";
-import fullscreenSvg from "@assets/svg/fullscreen.svg";
-import settingsSvg from "@assets/svg/settings.svg";
-import joinRoomSvg from "@assets/svg/joinRoom.svg";
 import leaveRoomSvg from "@assets/svg/leaveRoom.svg";
 import ControlBtn from "./ControlBtn";
-import {
-  useIsFullscreen,
-  useToggleFullscreen,
-} from "@context/fullscreen/FullscreenProvider";
 import { useHistory, useLocation } from "react-router-dom";
 import { useSocketIo } from "@context/socketIo/SocketIoProvider";
 import { useRoomContext } from "@context/room/RoomProvider";
-import { useAudio } from "@context/media/audioProvider";
-import { useVideo } from "@context/media/videoProvider";
+import { useMedia } from "@context/media/mediaProvider";
+import useLocalStorage from "@hooks/useLocalStorage";
 
 const Controls: FC = () => {
   const toggleSidePanel = useToggleSidePanel();
-  const toggleFullscreen = useToggleFullscreen();
-  const [hasVideo, setHasVideo] = useState(false);
-  const [hasAudio, setHasAudio] = useState(false);
-  const isFullscreen: boolean = useIsFullscreen();
+  const { room } = useRoomContext();
   const { pathname } = useLocation();
+  const { mediaStream } = useMedia();
+  const [startWithCamera] = useLocalStorage('startWithCamera', false)
+  const [startWithAudio] = useLocalStorage('startWithAudio', false)
+  const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(startWithCamera);
+  const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(startWithAudio);
   const history = useHistory();
   const socket = useSocketIo();
-  const { room } = useRoomContext();
-  const { getAudio, audioPermission, audioStream } = useAudio();
-  const { getVideo, videoPermission, videoStream } = useVideo();
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
+
+  function hasAudio() {
+    if (!mediaStream) return false;
+    return mediaStream
+      .getAudioTracks()
+      .some((audioTrack) => audioTrack.enabled === true);
+  }
+  function hasVideo() {
+    if (!mediaStream) return false;
+    return mediaStream
+      .getVideoTracks()
+      .some((videoTrack) => videoTrack.enabled === true);
+  }
 
   const handleAudio = () => {
-    getAudio();    
-  };
-  const handleVideo = () => {
-    getVideo();
-  };
-
-  useEffect(() => {
-    if(audioStream) {
-      socket.emit("media:stream", { media: audioStream })
+    if (isAudioEnabled) {
+      socket.emit("peer:audio:mute")
+      setIsAudioEnabled(false);
+    } else {
+      socket.emit("peer:audio:unmute")
+      setIsAudioEnabled(true);
     }
-  }, [audioStream])
+  };
 
-  /**
-   * first get permision for audio and video
-   * when click on video icon check if already has permission for camera if so start streaming or stop streaming
-   * if clicked on audio check for permission on audio
-   * */
+  const handleVideo = () => {    
+    if (isVideoEnabled) {
+      socket.emit("peer:video:stop")
+      setIsVideoEnabled(false);
+    } else {      
+      socket.emit("peer:video:start")
+      setIsVideoEnabled(true);
+    }
+  };
 
   const leaveRoom = () => {
     socket.emit("room:leave", { roomName: room.name });
     history.push("/");
   };
+
+  useEffect(() => {
+    if (pathname.includes("room")) {
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    if (mediaStream && pathname.includes("room")) {
+      setIsAudioEnabled(hasAudio());
+    }
+  }, [mediaStream]);
+  useEffect(() => {
+    if (mediaStream && pathname.includes("room")) {
+      setIsVideoEnabled(hasVideo());
+    }
+  }, [mediaStream]);
 
   return (
     <div className={styles.controls}>
@@ -67,14 +92,14 @@ const Controls: FC = () => {
           key={"videoSvg"}
           svg={videoSvg}
           alternateSvg={noVideoSvg}
-          state={videoPermission}
+          state={isVideoEnabled}
           callback={handleVideo}
         />
         <ControlBtn
           key={"audioSvg"}
-          svg={audioSvg}
-          alternateSvg={noAudioSvg}
-          state={audioPermission}
+          svg={micSvg}
+          alternateSvg={noMicSvg}
+          state={isAudioEnabled}
           callback={handleAudio}
         />
         <ControlBtn
@@ -82,6 +107,7 @@ const Controls: FC = () => {
           svg={chatSvg}
           state={false}
           callback={toggleSidePanel}
+          disabled={isDisabled}
         />
         <ControlBtn key={"shareSvg"} svg={shareSvg} state={true} />
       </div>
@@ -104,17 +130,8 @@ const Controls: FC = () => {
 export default Controls;
 
 {
-  /*
-  
+  /*  
   Replace maybe in nav
   <ControlBtn key={"settingsSvg"} svg={settingsSvg} state={true} />
-
-  Not working on mobile iphone
-  <ControlBtn
-          key={"fullscreenSvg"}
-          alternateSvg={notFullscreenSvg}
-          svg={fullscreenSvg}
-          state={isFullscreen}
-          callback={toggleFullscreen}
-        /> */
+ */
 }

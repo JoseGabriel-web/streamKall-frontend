@@ -7,9 +7,18 @@ import Nav from "@components/nav/Nav";
 import AppContext from "./context/app/AppContext";
 
 const Layout: FC<layoutProps> = ({ children }) => {
+  let [initialHeight, setInitialHeight] = useState(window.innerHeight);
+  useEffect(() => {
+    setInitialHeight(window.innerHeight);
+    console.log(initialHeight);
+  }, []);
 
   return (
-    <div className={styles.layout} data-layout>
+    <div
+      style={{ minHeight: initialHeight + "px" }}
+      className={styles.layout}
+      data-layout
+    >
       <AppContext>
         <Nav />
         <div className={styles.container}>

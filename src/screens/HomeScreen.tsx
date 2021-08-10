@@ -6,20 +6,31 @@ import { useRoomContext } from "@context/room/RoomProvider";
 import joinRoomSvg from "@assets/svg/joinRoom.svg";
 import ControlBtn from "@components/controls/ControlBtn";
 import { useHistory } from "react-router-dom";
+import React from "react";
+import useLocalStorage from "@hooks/useLocalStorage";
+import { useMedia } from "@context/media/mediaProvider";
 
 const HomeScreen: FC = () => {
   const history = useHistory();
   const socket = useSocketIo();
   const { user, updateUser } = useUserContext();
   const { room, updateRoom } = useRoomContext();
+  const { mediaStream } = useMedia()
   const [name, setName] = useState<string>("");
   const [roomName, setRoomName] = useState<string>("");
-  const [isDisabled, setIsDisabled] = useState<boolean>(name && roomName? true : false)
+  const [isDisabled, setIsDisabled] = useState<boolean>(name && roomName ? true : false);
+  const [storedName, setStoredName] = useLocalStorage("storedName", name);
+  const [rememberName, setRememberName] = useLocalStorage("rememberName", false);
+
+  const handleSaveName = () => {
+    setStoredName(name);
+  };
 
   const handleUser = () => {
     updateUser({
       name,
       id: socket.id,
+      ref: React.createRef(),
     });
   };
 
@@ -30,8 +41,9 @@ const HomeScreen: FC = () => {
     });
   };
 
-  const joinRoom = () => {
-    if(!name || !roomName) return
+  const joinRoom = () => {    
+    if (!name || !roomName) return;
+    if(rememberName) handleSaveName()
     handleUser();
     handleRoom();
     history.push("/room");
@@ -39,7 +51,14 @@ const HomeScreen: FC = () => {
 
   useEffect(() => {
     updateRoom({ name: "", participants: [] });
+    if(rememberName) {
+      setName(storedName)
+    }
   }, []);
+
+  useEffect(() => {
+    // mediaStream.getTracks().forEach(track => track.stop())
+  }, [])
 
   return (
     <div className={styles.homeScreen}>
@@ -61,7 +80,11 @@ const HomeScreen: FC = () => {
           />
         </div>
         <div className={styles.rememberNameQuestion}>
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            onChange={(e) => setRememberName(e.target.checked)}
+            checked={rememberName}
+          />
           <small>Remember name for future meetings</small>
         </div>
         <div className={styles.roomSwitch}>

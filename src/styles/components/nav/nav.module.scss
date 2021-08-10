@@ -5,7 +5,8 @@ $border-style: solid 1px;
   max-height: 10%;
   height: 10%;
   width: 100%;
-  display: flex;  
+  display: flex;
+  background-color: white;
   box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.5) 0px 0px 0px 1px;  
   -moz-box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.5) 0px 0px 0px 1px;    
 }

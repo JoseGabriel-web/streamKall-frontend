@@ -1,22 +1,26 @@
-$border-style: solid 1px;
 .sidePanel {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  background-color: white;
-  transition: 0.5s;
+  align-items: center;  
   box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 3px -0px,
-    rgba(0, 0, 0, 0.5) 1px 1px 1px -1px;
+  rgba(0, 0, 0, 0.5) 1px 1px 1px -1px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 3px 0px,
+  rgb(0, 0, 0) 1px -1px 1px -1px;
   height: 100%;
+  background-color: white;
+  z-index: 1;
+  overflow: hidden;
 }
 
 .sidePanel[data-isOpened="true"] {
   width: 350px;
+  min-width: 350px !important;
 }
+
 .sidePanel[data-isOpened="false"] {
   width: 0px;
+  min-width: 0px;
 }
 .sidePanelContainer {
   display: flex;
@@ -105,8 +109,7 @@ $border-style: solid 1px;
       display: flex;
       justify-content: center;
       align-items: center;
-      cursor: pointer;
-      transition: 200ms all ease;
+      cursor: pointer;      
 
       h5 {
         text-transform: capitalize;

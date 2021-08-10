@@ -1,4 +1,5 @@
 import { childrenProp, updateUserType, userInterface } from "@customTypes";
+import React from "react";
 import { createContext, FC, useContext, useState } from "react";
 
 interface userContextInterface {
@@ -9,6 +10,7 @@ interface userContextInterface {
 const defaultUser: userInterface = {
   name: "",
   id: "",
+  ref: React.createRef()
 };
 
 const UserContext = createContext<userContextInterface>({
@@ -22,7 +24,7 @@ export function useUserContext() {
 }
 
 const UserProvider: FC<childrenProp> = ({ children }) => {
-  const [user, setUser] = useState<userInterface>({ name: "", id: "" });
+  const [user, setUser] = useState<userInterface>(defaultUser);
 
   function updateUser(userObject: userInterface) {
     setUser(userObject);

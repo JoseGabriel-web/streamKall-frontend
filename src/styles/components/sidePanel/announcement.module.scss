@@ -6,4 +6,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+   
+  .announcement small::first-letter {
+    text-transform: uppercase;     
+  }
+
+  .announcement small {
+    background-color: red;
+   }
 }
