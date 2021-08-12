@@ -129,9 +129,3 @@ const Controls: FC = () => {
 
 export default Controls;
 
-{
-  /*  
-  Replace maybe in nav
-  <ControlBtn key={"settingsSvg"} svg={settingsSvg} state={true} />
- */
-}

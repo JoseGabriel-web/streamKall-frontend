@@ -1,22 +1,28 @@
-import { useEffect } from "react";
+import { RefObject, useEffect } from 'react'
 
-interface props {
-  element: HTMLElement | null;
-  callback (name: boolean): any;
+type AnyEvent = MouseEvent | TouchEvent
+
+const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
+  ref: RefObject<T>,
+  handler: (event: AnyEvent) => void,
+) => {
+  useEffect(() => {
+    const listener = (event: AnyEvent) => {
+      const el = ref?.current
+      if (!el || el.contains(event.target as Node)) {
+        return
+      }
+      handler(event)
+    }
+
+    document.addEventListener(`mousedown`, listener)
+    document.addEventListener(`touchstart`, listener)
+
+    return () => {
+      document.removeEventListener(`mousedown`, listener)
+      document.removeEventListener(`touchstart`, listener)
+    }
+  }, [ref, handler])
 }
 
-const useClickLocation = ({ element, callback }: props) => {
-  useEffect(() => {
-    const checkClickPosition = (e: globalThis.MouseEvent) => {
-      if (element && e.composedPath) {
-        const path = e.composedPath();
-        const onElement = path.includes(element);
-        callback(onElement)
-      }
-    };
-    window.addEventListener("click", checkClickPosition);
-    return () => window.removeEventListener("click", checkClickPosition);
-  }, [element]);
-};
-
-export default useClickLocation;
+export default useOnClickOutside

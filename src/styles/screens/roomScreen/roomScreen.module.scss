@@ -57,9 +57,31 @@
   bottom: 0;
   right: 0;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
   
   img {
     width: 25px;
-    height: 25px;
+    height: 25px;    
   }
+
+  input {
+    display: none;
+  }
+
+  &:hover {
+
+    img {
+      margin-top: 10px;
+    }
+
+    input {    
+      display: block;
+      writing-mode: bt-lr; /* IE */
+      -webkit-appearance: slider-vertical; /* WebKit */
+      width: 8px;
+      height: 100px;
+      padding: 0 5px;    
+    }
+  } 
 }

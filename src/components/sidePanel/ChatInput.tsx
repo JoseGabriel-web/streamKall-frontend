@@ -14,17 +14,12 @@ const ChatInput = () => {
   const [chosenEmoji, setChosenEmoji] = useState<IEmojiData | null>(null);
   const [isPickerOpen, setIsPickerOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
-  const detectClickPicker = (clicked: boolean) => {
-    if (!clicked) {
-      setIsPickerOpen(false);
-    }
+  const closePicker = () => {
+    setIsPickerOpen(false);
   };
 
   const pickerRef = useRef(null);
-  useClickLocation({
-    element: pickerRef.current,
-    callback: detectClickPicker,
-  });
+  useClickLocation(pickerRef, closePicker);
 
   const onEmojiClick: (event: React.MouseEvent, data: IEmojiData) => void = (
     _,

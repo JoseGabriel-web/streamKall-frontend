@@ -13,9 +13,8 @@ import { useMedia } from "@context/media/mediaProvider";
 const HomeScreen: FC = () => {
   const history = useHistory();
   const socket = useSocketIo();
-  const { user, updateUser } = useUserContext();
-  const { room, updateRoom } = useRoomContext();
-  const { mediaStream } = useMedia()
+  const { updateUser } = useUserContext();
+  const { updateRoom } = useRoomContext();
   const [name, setName] = useState<string>("");
   const [roomName, setRoomName] = useState<string>("");
   const [isDisabled, setIsDisabled] = useState<boolean>(name && roomName ? true : false);
@@ -55,10 +54,6 @@ const HomeScreen: FC = () => {
       setName(storedName)
     }
   }, []);
-
-  useEffect(() => {
-    // mediaStream.getTracks().forEach(track => track.stop())
-  }, [])
 
   return (
     <div className={styles.homeScreen}>
