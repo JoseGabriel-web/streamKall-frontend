@@ -24,7 +24,7 @@ const MediaProvider: FC<childrenProp> = ({ children }) => {
     new MediaStream(),
   );  
   const [startWithCamera] = useLocalStorage('startWithCamera', false)
-  const [startWithAudio] = useLocalStorage('startWithAudio', false)
+  const [startWithMic] = useLocalStorage('startWithAudio', false)
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
     console.log("This browser does not support the API yet");
@@ -40,7 +40,7 @@ const MediaProvider: FC<childrenProp> = ({ children }) => {
         if(!startWithCamera) {
           stream.getVideoTracks().forEach(track => track.enabled = false)
         }
-        if(!startWithAudio) {
+        if(!startWithMic) {
           stream.getAudioTracks().forEach(track => track.enabled = false)
         }
         setMediaStream(stream);

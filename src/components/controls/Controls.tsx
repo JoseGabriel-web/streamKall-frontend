@@ -21,9 +21,9 @@ const Controls: FC = () => {
   const { pathname } = useLocation();
   const { mediaStream } = useMedia();
   const [startWithCamera] = useLocalStorage('startWithCamera', false)
-  const [startWithAudio] = useLocalStorage('startWithAudio', false)
+  const [startWithMic] = useLocalStorage('startWithAudio', false)
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(startWithCamera);
-  const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(startWithAudio);
+  const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(startWithMic);
   const history = useHistory();
   const socket = useSocketIo();
   const [isDisabled, setIsDisabled] = useState<boolean>(true);

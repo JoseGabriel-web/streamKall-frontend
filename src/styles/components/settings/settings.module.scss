@@ -1,56 +1,97 @@
 .settingsSection {
   display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
   position: fixed;
-  background-color: white;
-  border: solid 1px;
-  width: auto;
-  height: auto;
-  padding: 20px;
-  max-height: 400px;
-  max-width: 90%;
-  min-width: 300px;
-  overflow: auto;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
 
   &[data-isopened="true"] {
-    display: block;
+    display: flex;
+    z-index: 102;
   }
 
-  .setting {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
-    // * {
-    //   border: solid;
-    // }
-
-    .label {
+  .settingsContainer {        
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+        rgba(27, 31, 35, 0.5) 0px 0px 0px 1px;
+    overflow: hidden;
+    
+    .settingsHeader {
       display: flex;
-      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;      
+      padding: 10px;
+      
+      box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+      rgba(27, 31, 35, 0.5) 0px 0px 0px 1px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+      rgba(27, 31, 35, 0.5) 0px 0px 0px 1px;
+
+      .settingsLabel {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+      }
+
+      button {        
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;        
+        padding: 5px;
+        border: none;
+        outline: none;
+      }
+    }    
+
+    .settings {
+      display: flex;
       justify-content: center;
-      align-items: center;
-      margin-right: 50px;
-    }
-    
-    img {
-      margin-right: 10px;
-      width: 20px;
+      flex-direction: column;
       height: auto;
-      height: 100%;
-      min-width: 15px;
-      min-height: 15px;
-    }
-    
-    .action {
-        
+      padding: 20px;
+      width: 500px;
+      max-height: 300px;
+      max-width: 100%;
+      min-height: 250px;
+      overflow: auto;
+
+      .setting {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        .label {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          margin-right: 50px;
+        }
+
         img {
+          margin-right: 10px;
+          width: 20px;
+          height: auto;
+          height: 100%;
+          min-width: 15px;
+          min-height: 15px;
+        }
+
+        .action {
+          img {
             cursor: pointer;
             width: 25px;
+          }
         }
+      }
     }
   }
 }
