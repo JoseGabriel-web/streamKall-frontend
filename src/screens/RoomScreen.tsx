@@ -11,10 +11,10 @@ import {
 } from "@customTypes";
 import recalculateLayout from "@helpers/recalculateLayout";
 import { useHistory } from "react-router-dom";
-import { useMedia } from "@context/media/mediaProvider";
 import Peer from "simple-peer";
 import { useSidePanelState } from "@context/sidePanel/SidePanelProvider";
 import Video from "@components/room/Video";
+import useLocalStorage from "@hooks/useLocalStorage";
 
 const RoomScreen: FC = () => {
   const { room, updateRoom } = useRoomContext();
@@ -24,10 +24,11 @@ const RoomScreen: FC = () => {
   const galleryRef = useRef<HTMLDivElement>(null);
   const socket = useSocketIo();
   const sidePanelState = useSidePanelState();
-  const { mediaStream, getMedia } = useMedia();
   const [peers, setPeers] = useState<peersMapInterface[]>([]);
   const peersRef = useRef<{ peerID: string; peer: Peer.Instance }[]>([]);
   const userVideo = useRef<HTMLVideoElement>(document.createElement("video"));
+  const [startWithCamera] = useLocalStorage("startWithCamera", false);
+  const [startWithMic] = useLocalStorage("startWithMic", false);
 
   const calculateGrid = () => {
     if (galleryRef.current === null) return;
@@ -47,87 +48,113 @@ const RoomScreen: FC = () => {
   }, [galleryRef.current, peers]);
 
   useEffect(() => {
-    if (room.name === "") return history.push("/");
-  }, [room]);
-
-  useEffect(() => {
     calculateGrid();
   }, [sidePanelState]);
 
-  /**  video and peer logic */  
-
+  /**  video and peer logic */
   useEffect(() => {
-    getMedia();
-    userVideo.current.srcObject = mediaStream;
-    socket.emit("room:join", { room: room.name, name: user.name });
-    socket.on("peer:users", (users) => {
-      const peers: peersMapInterface[] = [];
-      /* userID is the socketID for the user */
-      users.forEach((userID: string) => {
-        const peer = createPeer(userID, socket.id, mediaStream);
-        peersRef.current.push({
-          peerID: userID,
-          peer,
+    if (room.name === "") return history.push("/");
+    navigator.mediaDevices
+      .getUserMedia({
+        audio: true,
+        video: { width: 1280, height: 720 },
+      })
+      .then((mediaStream) => {
+        if (!startWithCamera) {
+          mediaStream
+            .getVideoTracks()
+            .forEach((track) => (track.enabled = false));
+        }
+        if (!startWithMic) {
+          mediaStream
+            .getAudioTracks()
+            .forEach((track) => (track.enabled = false));
+        }
+
+        userVideo.current.srcObject = mediaStream;
+        calculateGrid();
+        socket.emit("room:join", { room: room.name, name: user.name });
+        socket.on("peer:users", (users) => {
+          const peers: peersMapInterface[] = [];
+          /* userID is the socketID for the user */
+          users.forEach((userID: string) => {
+            const peer = createPeer(userID, socket.id, mediaStream);
+            peersRef.current.push({
+              peerID: userID,
+              peer,
+            });
+            peers.push({ peer, socketID: userID });
+          });
+          setPeers(peers);
         });
-        peers.push({ peer, socketID: userID });
+
+        socket.on("user joined", (payload) => {
+          const peer = addPeer(payload.signal, payload.callerID, mediaStream);
+          peersRef.current.push({
+            peerID: payload.callerID,
+            peer,
+          });
+
+          const socketID = getPeerSocketID(peer);
+
+          setPeers((users) => [...users, { peer, socketID: socketID || "" }]);
+        });
+
+        socket.on("receiving returned signal", (payload) => {
+          const item = peersRef.current.find((p) => p.peerID === payload.id);
+          item?.peer.signal(payload.signal);
+        });
+
+        socket.on("room:information", (roomData: roomInterface) => {
+          /* Update room information once new user enters room */
+          updateRoom({
+            name: roomData.name,
+            participants: roomData.participants,
+          });
+        });
+
+        socket.on("peer:offline", (socketID: string) => {
+          /* Remove peer and destroy it */
+          removePeer(socketID);
+        });
+
+        socket.on("peer:stop:video", (socketID: string) => {
+          /* Stop peer video stream */
+          if (socketID === socket.id) {
+            mediaStream
+              .getVideoTracks()
+              .forEach((track) => (track.enabled = false));
+          }
+        });
+        socket.on("peer:start:video", (socketID: string) => {
+          /* Start peer video stream */
+          if (socketID === socket.id) {
+            mediaStream
+              .getVideoTracks()
+              .forEach((track) => (track.enabled = true));
+          }
+        });
+        socket.on("peer:mute:audio", (socketID: string) => {
+          /* mute peer audio stream */
+          if (socketID === socket.id) {
+            mediaStream
+              .getAudioTracks()
+              .forEach((track) => (track.enabled = false));
+          }
+        });
+        socket.on("peer:unmute:audio", (socketID: string) => {
+          /* unmute peer audio stream */
+          if (socketID === socket.id) {
+            mediaStream
+              .getAudioTracks()
+              .forEach((track) => (track.enabled = true));
+          }
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        return history.push('/')
       });
-      setPeers(peers);
-    });
-
-    socket.on("user joined", (payload) => {
-      const peer = addPeer(payload.signal, payload.callerID, mediaStream);
-      peersRef.current.push({
-        peerID: payload.callerID,
-        peer,
-      });
-
-      const socketID = getPeerSocketID(peer);
-
-      setPeers((users) => [...users, { peer, socketID: socketID || "" }]);
-    });
-
-    socket.on("receiving returned signal", (payload) => {
-      const item = peersRef.current.find((p) => p.peerID === payload.id);
-      item?.peer.signal(payload.signal);
-    });
-
-    socket.on("room:information", (roomData: roomInterface) => {
-      /* Update room information once new user enters room */
-      updateRoom({
-        name: roomData.name,
-        participants: roomData.participants,
-      });
-    });
-
-    socket.on("peer:offline", (socketID: string) => {
-      /* Remove peer and destroy it */
-      removePeer(socketID);
-    });
-
-    socket.on("peer:stop:video", (socketID: string) => {      
-      /* Stop peer video stream */
-      if(socketID === socket.id) {
-        mediaStream.getVideoTracks().forEach(track => track.enabled = false)
-      } 
-    })
-    socket.on("peer:start:video", (socketID: string) => {      
-      /* Start peer video stream */
-      if(socketID === socket.id) {
-        mediaStream.getVideoTracks().forEach(track => track.enabled = true)
-      } 
-    })
-    socket.on("peer:mute:audio", (socketID: string) => {      
-      /* mute peer audio stream */
-      if(socketID === socket.id) {
-        mediaStream.getAudioTracks().forEach(track => track.enabled = false)
-      } 
-    })
-    socket.on("peer:unmute:audio", (socketID: string) => {      
-      /* unmute peer audio stream */
-      if(socketID === socket.id) {
-        mediaStream.getAudioTracks().forEach(track => track.enabled = true)
-      } 
-    })
 
     return () => {
       socket.emit("room:leave");

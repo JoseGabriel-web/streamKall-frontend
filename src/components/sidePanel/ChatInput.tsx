@@ -1,12 +1,11 @@
 import styles from "@styles/components/sidePanel/chatInput.module.scss";
 import ControlBtn from "@components/controls/ControlBtn";
-import emojiPickerSvg from "@assets/svg/emojiPicker.svg";
-import sendSvg from "@assets/svg/send.svg";
 import Picker, { IEmojiData } from "emoji-picker-react";
 import { useRef, useState } from "react";
 import useClickLocation from "@hooks/useClickLocation";
 import { useSocketIo } from "@context/socketIo/SocketIoProvider";
 import { useRoomContext } from "@context/room/RoomProvider";
+import { ArrowRight, EmojiSmile } from "react-bootstrap-icons";
 
 const ChatInput = () => {
   const socket = useSocketIo();
@@ -47,8 +46,6 @@ const ChatInput = () => {
     }
   };
 
-  // Jose add on typing socket event and implement it in chat component
-
   return (
     <div className={styles.chatInput}>
       <div ref={pickerRef} className={styles.emojiPickerContainer}>
@@ -73,7 +70,7 @@ const ChatInput = () => {
         </span>
 
         <ControlBtn
-          svg={emojiPickerSvg}
+          Svg={EmojiSmile}
           state={false}
           callback={toggleEmojiPicker}
         />
@@ -91,7 +88,7 @@ const ChatInput = () => {
       </div>
 
       <div className={styles.sendIconContainer}>
-        <ControlBtn state={false} svg={sendSvg} callback={emitMessage} />
+        <ControlBtn state={false} Svg={ArrowRight} callback={emitMessage} />
       </div>
     </div>
   );

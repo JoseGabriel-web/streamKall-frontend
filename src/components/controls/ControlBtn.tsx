@@ -2,12 +2,12 @@ import { controlBtnInterface } from "@customTypes";
 import { FC } from "react";
 
 const ControlBtn: FC<controlBtnInterface> = ({
-  svg,
-  alternateSvg,
+  Svg,
+  AlternateSvg,
   state,
   callback,
   size,
-  disabled
+  disabled,
 }) => {
   const handleClick = () => {
     if (callback) {
@@ -17,16 +17,29 @@ const ControlBtn: FC<controlBtnInterface> = ({
 
   return (
     <button
-      style={{ cursor: "pointer" }}
+      style={{
+        cursor: "pointer",
+      }}
       onClick={() => handleClick()}
       disabled={disabled}
     >
-      <img
-        src={alternateSvg && !state ? alternateSvg : svg}
-        height={size ? size : "70%"}
-        width={size ? size : "70%"}
-        style={{ maxWidth: "25px", maxHeight: "25px" }}
-      />
+      <div
+        style={{
+          maxWidth: "25px",
+          maxHeight: "25px",
+          height: size ? size : "70%",
+          width: size ? size : "70%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {!state && AlternateSvg ? (
+          <AlternateSvg height="100%" width="100%" />
+        ) : (
+          <Svg height="100%" width="100%" />
+        )}
+      </div>
     </button>
   );
 };

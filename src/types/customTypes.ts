@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { Icon } from "react-bootstrap-icons";
 import Peer from 'simple-peer'
 
 export interface screenInterface {
@@ -16,12 +17,12 @@ export interface childrenProp {
 }
 
 export interface controlBtnInterface {
-  svg: string,
-  alternateSvg?: string,
+  Svg: Icon,
+  AlternateSvg?: Icon,
   state: boolean,
   callback?:  () => void,
   size?: string,
-  disabled?: boolean
+  disabled?: boolean,  
 }
 
 export interface messageInterface {

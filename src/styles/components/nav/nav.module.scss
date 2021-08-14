@@ -8,11 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: white;
-  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
-    rgba(27, 31, 35, 0.5) 0px 0px 0px 1px;
-  -moz-box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
-    rgba(27, 31, 35, 0.5) 0px 0px 0px 1px;
+  border-bottom: solid 1px;
 
   .leftSection, .middleSection, .rightSection {
     flex: 1;
@@ -20,7 +16,7 @@
     height: 100%;
     display: flex;
     align-items: center;    
-    overflow: hidden;    
+    overflow: hidden;        
   }
 
   .middleSection {

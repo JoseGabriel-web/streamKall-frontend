@@ -1,12 +1,12 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState } from "react";
 import styles from "@styles/components/sidePanel/sidePanel.module.scss";
 import { useSidePanelState } from "@context/sidePanel/SidePanelProvider";
 import Participants from "./Participants";
 import Chat from "./Chat";
 import ChatInput from "./ChatInput";
 import ControlBtn from "@components/controls/ControlBtn";
-import closeSvg from "@assets/svg/close.svg";
 import { useToggleSidePanel } from "@context/sidePanel/SidePanelProvider";
+import { XLg } from "react-bootstrap-icons";
 
 const SidePanel: FC = () => {
   const state = useSidePanelState();
@@ -42,7 +42,7 @@ const SidePanel: FC = () => {
             <div className={styles.closeBtnContainer}>
               <ControlBtn
                 size="40%"
-                svg={closeSvg}
+                Svg={XLg}
                 callback={toggleSidePanel}
                 state={false}
               />

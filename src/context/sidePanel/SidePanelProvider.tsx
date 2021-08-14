@@ -21,11 +21,11 @@ const SidePanelProvider: FC<childrenProp> = ({ children }) => {
     setSidePanelState((prev) => !prev);
   }
 
-  useEffect(() => {
-    if(!pathname.includes("room")) {
-      setSidePanelState(false)
-    }
-  },[pathname, sidePanelState])
+  // useEffect(() => {
+  //   if(!pathname.includes("room")) {
+  //     setSidePanelState(false)
+  //   }
+  // },[pathname, sidePanelState])
 
   return (
     <SidePanelStateContext.Provider value={sidePanelState}>

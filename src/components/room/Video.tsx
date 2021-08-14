@@ -44,7 +44,6 @@ const Video = ({ peer, socketID, styles }: videoProps) => {
     if (ref.current) {
       ref.current.volume = volume;
     }
-    console.log(volume);
   }, [volume]);
 
   useEffect(() => {
@@ -53,11 +52,9 @@ const Video = ({ peer, socketID, styles }: videoProps) => {
         ref.current.srcObject = stream;
       });
     }
-  }, [ref]);
+  }, [ref, peer]);
 
-  const toggleIsMuted = () => {
-    setIsMuted((prev) => !prev);
-  };
+  const toggleIsMuted = () => setIsMuted((prev) => !prev);
 
   return (
     <div className={styles.videoContainer} data-name={user.name}>

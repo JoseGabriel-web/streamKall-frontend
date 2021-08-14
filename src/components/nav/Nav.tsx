@@ -1,10 +1,12 @@
 import { FC, useState } from "react";
 import styles from "@styles/components/nav/nav.module.scss";
-import logo from "@assets/img/logo-black.png";
-import settingsSvg from "@assets/svg/settings.svg";
+import logoBlack from "@assets/img/logo-black.png";
+import logoWhite from "@assets/img/logo-white.png";
 import ControlBtn from "@components/controls/ControlBtn";
 import { Link } from "react-router-dom";
 import Settings from "@components/settings/Settings";
+import { Gear } from "react-bootstrap-icons";
+
 
 const Nav: FC = () => {
   const [settingsState, setSettingsState] = useState<boolean>(false);
@@ -14,12 +16,12 @@ const Nav: FC = () => {
     <nav className={styles.nav}>
       <div className={styles.leftSection} />
       <Link to="/" className={styles.middleSection}>
-        <img src={logo} />
+        <img src={logoBlack} />
       </Link>
       <div className={styles.rightSection}>
         <ControlBtn
           key={"settingsSvg"}
-          svg={settingsSvg}
+          Svg={Gear}
           state={true}
           callback={openSettings}
         />

@@ -14,23 +14,19 @@
     z-index: 102;
   }
 
-  .settingsContainer {        
+  .settingsContainer {
     border-radius: 5px;
     background-color: white;
-    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
-        rgba(27, 31, 35, 0.5) 0px 0px 0px 1px;
     overflow: hidden;
+    max-width: 90%;
+    border: solid 1px black;
     
     .settingsHeader {
       display: flex;
       justify-content: space-between;
       align-items: center;      
       padding: 10px;
-      
-      box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
-      rgba(27, 31, 35, 0.5) 0px 0px 0px 1px;
-    -moz-box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
-      rgba(27, 31, 35, 0.5) 0px 0px 0px 1px;
+      border-bottom: solid black 1px;
 
       .settingsLabel {
         display: flex;
@@ -76,7 +72,7 @@
           margin-right: 50px;
         }
 
-        img {
+        svg {
           margin-right: 10px;
           width: 20px;
           height: auto;
@@ -86,7 +82,7 @@
         }
 
         .action {
-          img {
+          svg {
             cursor: pointer;
             width: 25px;
           }

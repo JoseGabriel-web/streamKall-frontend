@@ -1,10 +1,7 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import styles from "@styles/components/sidePanel/participant.module.scss";
 import ControlBtn from "@components/controls/ControlBtn";
-import videoSvg from "@assets/svg/video.svg";
-import noVideoSvg from "@assets/svg/noVideo.svg";
-import micSvg from "@assets/svg/mic.svg";
-import noMicSvg from "@assets/svg/noMic.svg";
+import { CameraVideo, CameraVideoOff, Mic, MicMute } from "react-bootstrap-icons";
 
 interface props {
   name: string;
@@ -26,15 +23,15 @@ const Participant: FC<props> = ({ name, audio, video }: props) => {
       <div className={styles.participantMedia}>
         <ControlBtn
           key={"participants - videoSvg"}
-          svg={videoSvg}
-          alternateSvg={noVideoSvg}
+          Svg={CameraVideo}
+          AlternateSvg={CameraVideoOff}
           state={video}
           size="80%"
         />
         <ControlBtn
           key={"participants - audioSvg"}
-          svg={micSvg}
-          alternateSvg={noMicSvg}
+          Svg={Mic}
+          AlternateSvg={MicMute}
           state={audio}
           size="80%"
         />

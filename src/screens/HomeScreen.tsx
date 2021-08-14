@@ -3,12 +3,11 @@ import styles from "@styles/screens/homeScreen/homeScreen.module.scss";
 import { useUserContext } from "@context/user/UserProvider";
 import { useSocketIo } from "@context/socketIo/SocketIoProvider";
 import { useRoomContext } from "@context/room/RoomProvider";
-import joinRoomSvg from "@assets/svg/joinRoom.svg";
 import ControlBtn from "@components/controls/ControlBtn";
 import { useHistory } from "react-router-dom";
 import React from "react";
 import useLocalStorage from "@hooks/useLocalStorage";
-import { useMedia } from "@context/media/mediaProvider";
+import { BoxArrowInLeft } from "react-bootstrap-icons";
 
 const HomeScreen: FC = () => {
   const history = useHistory();
@@ -17,9 +16,14 @@ const HomeScreen: FC = () => {
   const { updateRoom } = useRoomContext();
   const [name, setName] = useState<string>("");
   const [roomName, setRoomName] = useState<string>("");
-  const [isDisabled, setIsDisabled] = useState<boolean>(name && roomName ? true : false);
+  const [isDisabled, setIsDisabled] = useState<boolean>(
+    name && roomName ? true : false,
+  );
   const [storedName, setStoredName] = useLocalStorage("storedName", name);
-  const [rememberName, setRememberName] = useLocalStorage("rememberName", false);
+  const [rememberName, setRememberName] = useLocalStorage(
+    "rememberName",
+    false,
+  );
 
   const handleSaveName = () => {
     setStoredName(name);
@@ -40,9 +44,9 @@ const HomeScreen: FC = () => {
     });
   };
 
-  const joinRoom = () => {    
+  const joinRoom = () => {
     if (!name || !roomName) return;
-    if(rememberName) handleSaveName()
+    if (rememberName) handleSaveName();
     handleUser();
     handleRoom();
     history.push("/room");
@@ -50,9 +54,9 @@ const HomeScreen: FC = () => {
 
   useEffect(() => {
     updateRoom({ name: "", participants: [] });
-    if(rememberName) {
-      setName(storedName)
-    }
+    if (rememberName) {
+      setName(storedName);
+    }        
   }, []);
 
   return (
@@ -86,7 +90,7 @@ const HomeScreen: FC = () => {
           <ControlBtn
             callback={joinRoom}
             key={"roomControlSvg"}
-            svg={joinRoomSvg}
+            Svg={BoxArrowInLeft}
             state={true}
             size={"100%"}
             disabled={isDisabled}

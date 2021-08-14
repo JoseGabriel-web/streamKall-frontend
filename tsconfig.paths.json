@@ -4,14 +4,15 @@
     "paths": {
       "@screens/*": ["src/screens/*"],
       "@components/*": ["src/components/*"],
-      "@styles/*": ["src/styles/*"],      
+      "@styles/*": ["src/styles/*"],
       "@customTypes": ["src/types/customTypes"],
       "@context/*": ["src/context/*"],
       "@assets/*": ["src/assets/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@helpers/*": ["src/helpers/*"],      
-      "@data/*": ["src/data/*"],      
-      "@config/*": ["src/config/*"]
+      "@helpers/*": ["src/helpers/*"],
+      "@data/*": ["src/data/*"],
+      "@config/*": ["src/config/*"],
+      "@cssVariables/*": ["src/styles/variables/*"]
     }
   }
 }

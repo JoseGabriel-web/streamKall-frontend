@@ -1,0 +1,95 @@
+.notificationContainer {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+  
+    &[data-isopened="true"] {
+      display: flex;
+      z-index: 102;
+    }
+  
+    .notificationContent {        
+      border-radius: 5px;
+      background-color: white;
+      box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+          rgba(27, 31, 35, 0.5) 0px 0px 0px 1px;
+      overflow: hidden;
+      max-width: 90%;
+      
+      .notificationHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;      
+        padding: 10px;
+        border-bottom: solid 1px;
+  
+        .headerLabel {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex: 1;
+        }
+  
+        button {        
+          border-radius: 5px;
+          display: flex;
+          justify-content: center;
+          align-items: center;        
+          padding: 5px;
+          border: none;
+          outline: none;
+        }
+      }    
+  
+      .notification {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+        width: 500px;
+        max-height: 300px;
+        max-width: 100%;
+        min-height: 250px;
+        overflow: auto;
+  
+        .setting {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+  
+          .label {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin-right: 50px;
+          }
+  
+          svg {
+            margin-right: 10px;
+            width: 20px;
+            height: auto;
+            height: 100%;
+            min-width: 15px;
+            min-height: 15px;
+          }
+  
+          .action {
+            svg {
+              cursor: pointer;
+              width: 25px;
+            }
+          }
+        }
+      }
+    }
+  }
+  
