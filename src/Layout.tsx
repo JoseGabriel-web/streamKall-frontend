@@ -5,7 +5,6 @@ import Controls from "@components/controls/Controls";
 import SidePanel from "@components/sidePanel/SidePanel";
 import Nav from "@components/nav/Nav";
 import AppContext from "./context/app/AppContext";
-import Notification from "@components/notification/Notification";
 
 const Layout: FC<layoutProps> = ({ children }) => {
   let [initialHeight, setInitialHeight] = useState(window.innerHeight);
@@ -24,7 +23,6 @@ const Layout: FC<layoutProps> = ({ children }) => {
         <Nav />
         <div className={styles.container}>
         <SidePanel />
-          <Notification />
           <div className={styles.contentContainer}>
             <div className={styles.children}>{children}</div>
             <Controls />
